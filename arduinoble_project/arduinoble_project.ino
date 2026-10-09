@@ -2,47 +2,54 @@
 #include "pitches.h"
 #include <ArduinoBLE.h>
 
-BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214"); // Bluetooth® Low Energy LED Service
+BLEService speakerService("19B10000-E8F2-537E-4F6C-D104768A1214");  // Bluetooth® Low Energy LED Service
 
 // Bluetooth® Low Energy LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic playNote("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 
-const int ledPin = LED_BUILTIN; // pin to use for the LED
 
 void setup() {
   Serial.begin(9600);
-  while (!Serial);
+  while (!Serial)
+    ;
 
-  // set LED pin to output mode
-  pinMode(ledPin, OUTPUT);
+  Serial.println("start");
 
   // begin initialization
   if (!BLE.begin()) {
     Serial.println("starting Bluetooth® Low Energy module failed!");
 
-    while (1);
+    while (1)
+      ;
   }
 
+  pinMode(6, OUTPUT);
+
   // set advertised local name and service UUID:
-  BLE.setLocalName("LED");
-  BLE.setAdvertisedService(ledService);
+  BLE.setLocalName("Speaker");
+  BLE.setAdvertisedService(speakerService);
 
   // add the characteristic to the service
-  ledService.addCharacteristic(switchCharacteristic);
+  speakerService.addCharacteristic(playNote);
 
   // add service
-  BLE.addService(ledService);
+  BLE.addService(speakerService);
 
   // set the initial value for the characteristic:
-  switchCharacteristic.writeValue(0);
+  playNote.writeValue(0);
 
   // start advertising
   BLE.advertise();
 
-  Serial.println("BLE LED Peripheral");
+  Serial.println("BLE Speaker Peripheral");
+
+  // tone(13, NOTE_C4);
 }
 
 void loop() {
+
+  // digitalWrite(13, HIGH);
+
   // listen for Bluetooth® Low Energy peripherals to connect:
   BLEDevice central = BLE.central();
 
@@ -56,13 +63,27 @@ void loop() {
     while (central.connected()) {
       // if the remote device wrote to the characteristic,
       // use the value to control the LED:
-      if (switchCharacteristic.written()) {
-        if (switchCharacteristic.value()) {   // any value other than 0
-          Serial.println("LED on");
-          digitalWrite(ledPin, HIGH);         // will turn the LED on
-        } else {                              // a 0 value
-          Serial.println(F("LED off"));
-          digitalWrite(ledPin, LOW);          // will turn the LED off
+      // if (switchCharacteristic.written()) {
+      //   if (switchCharacteristic.value()) {   // any value other than 0
+      //     Serial.println("LED on");
+      //     digitalWrite(ledPin, HIGH);         // will turn the LED on
+      //   } else {                              // a 0 value
+      //     Serial.println(F("LED off"));
+      //     digitalWrite(ledPin, LOW);          // will turn the LED off
+      //   }
+      // }
+
+      if (playNote.written()) {
+        if (playNote.value()) {
+
+          Serial.println("written");
+          tone(6, NOTE_A4);
+
+        }
+
+        else {
+          Serial.println(F("not working"));
+          noTone(6);
         }
       }
     }
