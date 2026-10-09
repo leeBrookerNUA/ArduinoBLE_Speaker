@@ -13,7 +13,7 @@ Controlling a DFRobot Speaker via Bluetooth for Year 3 CTR Masterclass number 1
 - Arduino IDE
 - The Light Blue App
 - [Arduino PlayMelody](https://docs.arduino.cc/built-in-examples/digital/toneMelody/)
-- [tone()] (https://docs.arduino.cc/language-reference/en/functions/advanced-io/tone/)
+- [tone()](https://docs.arduino.cc/language-reference/en/functions/advanced-io/tone/)
 
 # Instructions
 - Download the Arduino IDE and clone this GitHub reposetory
