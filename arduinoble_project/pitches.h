@@ -1,6 +1,6 @@
 /*************************************************
 
- * Public Constants
+// Defines notes that the speaker can play using tone()
 
  *************************************************/
 

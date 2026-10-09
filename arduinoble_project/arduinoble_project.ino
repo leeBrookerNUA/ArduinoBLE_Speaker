@@ -24,6 +24,7 @@ void setup() {
       ;
   }
 
+  // the pin the speaker is connected to
   pinMode(6, OUTPUT);
 
   // set advertised local name and service UUID:
@@ -48,8 +49,6 @@ void setup() {
 
 void loop() {
 
-  // digitalWrite(13, HIGH);
-
   // listen for Bluetooth® Low Energy peripherals to connect:
   BLEDevice central = BLE.central();
 
@@ -61,20 +60,11 @@ void loop() {
 
     // while the central is still connected to peripheral:
     while (central.connected()) {
-      // if the remote device wrote to the characteristic,
-      // use the value to control the LED:
-      // if (switchCharacteristic.written()) {
-      //   if (switchCharacteristic.value()) {   // any value other than 0
-      //     Serial.println("LED on");
-      //     digitalWrite(ledPin, HIGH);         // will turn the LED on
-      //   } else {                              // a 0 value
-      //     Serial.println(F("LED off"));
-      //     digitalWrite(ledPin, LOW);          // will turn the LED off
-      //   }
-      // }
 
+      // checks if notes are being sent over bluetooth
       if (playNote.written()) {
 
+          // switch handles the different notes that can be played, range is C4-B4
           switch (playNote.value()) {
 
           case 1:
@@ -112,6 +102,7 @@ void loop() {
             tone(6, NOTE_B4);
             break;
 
+          // if something undefined is sent the speaker stops playing notes
           default:
             Serial.println("unknown note");
             noTone(6);
