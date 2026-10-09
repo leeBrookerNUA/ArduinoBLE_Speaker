@@ -2,6 +2,7 @@
 #include "pitches.h"
 #include <ArduinoBLE.h>
 
+
 BLEService speakerService("19B10000-E8F2-537E-4F6C-D104768A1214");  // Bluetooth® Low Energy LED Service
 
 // Bluetooth® Low Energy LED Switch Characteristic - custom 128-bit UUID, read and writable by central
@@ -43,7 +44,6 @@ void setup() {
 
   Serial.println("BLE Speaker Peripheral");
 
-  // tone(13, NOTE_C4);
 }
 
 void loop() {
@@ -74,17 +74,52 @@ void loop() {
       // }
 
       if (playNote.written()) {
-        if (playNote.value()) {
 
-          Serial.println("written");
-          tone(6, NOTE_A4);
+          switch (playNote.value()) {
+
+          case 1:
+            Serial.println(playNote.value());
+            tone(6, NOTE_C4);
+            break;
+
+          case 2:
+            Serial.println(playNote.value());
+            tone(6, NOTE_D4);
+            break;
+
+          case 3:
+            Serial.println(playNote.value());
+            tone(6, NOTE_E4);
+            break;
+
+          case 4:
+            Serial.println(playNote.value());
+            tone(6, NOTE_F4);
+            break;
+
+          case 5:
+            Serial.println(playNote.value());
+            tone(6, NOTE_G4);
+            break;
+
+          case 6:
+            Serial.println(playNote.value());
+            tone(6, NOTE_A4);
+            break;
+
+          case 7:
+            Serial.println(playNote.value());
+            tone(6, NOTE_B4);
+            break;
+
+          default:
+            Serial.println("unknown note");
+            noTone(6);
+            break;
+          
 
         }
 
-        else {
-          Serial.println(F("not working"));
-          noTone(6);
-        }
       }
     }
 
